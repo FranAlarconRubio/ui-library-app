@@ -5,9 +5,9 @@
       <button
         class="btn btn-sm btn-link p-0 me-2"
         (click)="toggleExpand(); $event.stopPropagation()">
-        <i
+        <i class="caret-icon"
           [class.bi-caret-down-fill]="$isExpanded()"
-          [class.bi-caret-right-fill]="!$isExpanded()">
+          [class.bi-caret-right]="!$isExpanded()">
         </i>
       </button>
     }@else {
