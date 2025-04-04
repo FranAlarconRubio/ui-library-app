@@ -1,31 +1,42 @@
 <li class="list-group-item p-0">
   <div class="d-flex align-items-center" (click)="selectNode()">
-    <input type="checkbox" class="form-check-input me-2" />
-
-    @if(node!.children?.length) {
-      <i 
-      class="me-2"
-      [class.bi-folder2-open]="$isExpanded()"
-      [class.bi-folder-fill]="$isExpanded() === false"
-      >
-      </i>
+    <!-- Botón para expandir/colapsar -->
+    @if (node!.children?.length) {
+      <button
+        class="btn btn-sm btn-link p-0 me-2"
+        (click)="toggleExpand(); $event.stopPropagation()">
+        <i
+          [class.bi-caret-down-fill]="$isExpanded()"
+          [class.bi-caret-right-fill]="!$isExpanded()">
+        </i>
+      </button>
+    }@else {
+      <span class="me-2"></span> <!-- Espaciado para alinear nodos sin flecha -->
     }
 
-
+    <!-- Ícono de carpeta o archivo -->
     @if (node!.children?.length) {
-      <button class="btn btn-sm btn-link p-0 me-2" (click)="toggleExpand()">
-        <i [class.bi-caret-down-fill]="$isExpanded()" [class.bi-caret-right-fill]="!$isExpanded()"></i>
-      </button>
+      <i
+        class="me-2"
+        [class.bi-folder2-open]="$isExpanded()"
+        [class.bi-folder-fill]="!$isExpanded()">
+      </i>
     }@else {
       <i class="bi bi-file-earmark-fill me-2"></i>
     }
+
+    <!-- Checkbox -->
+    <input type="checkbox" class="form-check-input me-2" />
+
+    <!-- Etiqueta del nodo -->
     <span class="fw-bold">{{ node!.label }}</span>
   </div>
 
+  <!-- Lista de nodos hijos -->
   @if ($isExpanded() && node!.children?.length) {
     <ul class="list-group ms-3 mt-2" [ngClass]="{ 'collapsed': !$isExpanded(), 'expanded': $isExpanded() }">
       @for (child of node!.children; track $index) {
-        <app-tree-node [node]="child" (nodeSelected)="nodeSelected.emit($event)" ></app-tree-node>
+        <app-tree-node [node]="child" (nodeSelected)="nodeSelected.emit($event)"></app-tree-node>
       }
     </ul>
   }
