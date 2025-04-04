@@ -7,7 +7,7 @@
     data-bs-auto-close="outside"
     aria-expanded="false">
     <i class="bi bi-tree me-2"></i>
-    {{ selectedNodeLabel()}}
+    {{ selectedNodeControl.value ?? 'Select a node' }}
   </button>
   <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
     <ul class="list-group">
