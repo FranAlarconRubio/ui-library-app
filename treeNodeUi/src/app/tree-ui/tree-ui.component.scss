@@ -13,6 +13,7 @@
   opacity: 0;
   transform: translateY(-15px);
   transition: opacity 0.4s ease, transform 0.4s ease;
+  width: 100%; // Asegura que el menú tenga el mismo ancho que el botón
 
   &.show {
     opacity: 1; // Hace visible el menú
@@ -33,12 +34,19 @@
 
 button#dropdownMenuButton {
   width: 100%; // Asegura que el botón ocupe todo el ancho del contenedor
-  text-align: left; // Alinea el texto a la izquierda
+  text-align: center; // Centra el texto dentro del botón
   border-radius: 8px; // Bordes redondeados
   background-color: #228B22; // Color verde bosque
   color: #fff; // Texto blanco
   padding: 0.5rem 1rem; // Espaciado interno
   font-weight: bold; // Hace el texto más destacado
+  display: flex; // Usa flexbox para alinear el contenido
+  justify-content: center; // Centra el contenido horizontalmente
+  align-items: center; // Centra el contenido verticalmente
+}
+
+button#dropdownMenuButton i {
+  margin-right: 0.5rem; // Agrega espacio entre el ícono y el texto
 }
 
 button#dropdownMenuButton:hover {
