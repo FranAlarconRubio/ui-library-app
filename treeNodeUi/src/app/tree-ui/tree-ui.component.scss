@@ -21,11 +21,15 @@
   }
 }
 
+.list-group {
+  padding-left: 0; // Elimina el padding predeterminado de la lista
+}
+
 .list-group-item {
   border: none; // Elimina los bordes entre los elementos
-  padding: 0.5rem 1rem; // Ajusta el espaciado interno
+  padding: 0.5rem 1rem; // Espaciado interno consistente
   transition: background-color 0.2s ease-in-out;
-  font-size: 0.875rem; // Tamaño de fuente más pequeño
+  font-size: 0.875rem; // Tamaño de fuente consistente
 
   &:hover {
     background-color: #e6ffe6; // Fondo verde muy claro al pasar el mouse

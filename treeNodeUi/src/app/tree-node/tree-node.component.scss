@@ -1,5 +1,6 @@
 .tree-node {
-  margin-left: 20px;
+  margin-left: 0; // Elimina márgenes acumulativos
+  padding-left: 1rem; // Usa un padding fijo para la indentación
 }
 
 .node-label {
@@ -7,12 +8,19 @@
   cursor: pointer;
 }
 
+.list-group {
+  padding-left: 0; // Elimina el padding predeterminado de la lista
+}
+
 .list-group-item {
+  padding: 0.5rem 1rem; // Espaciado interno consistente
+  border: none; // Elimina bordes entre los elementos
+  font-size: 0.875rem; // Tamaño de fuente consistente
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    background-color: #f8f9fa;
+    background-color: #e6ffe6; // Fondo verde muy claro al pasar el mouse
   }
 }
 
@@ -24,9 +32,9 @@ button {
 }
 
 ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
+  list-style: none; // Elimina los estilos de lista predeterminados
+  padding-left: 0; // Elimina el padding predeterminado
+  margin: 0; // Elimina márgenes acumulativos
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 

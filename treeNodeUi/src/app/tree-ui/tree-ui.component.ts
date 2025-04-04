@@ -16,14 +16,43 @@ export class TreeUiComponent {
     {
       label: 'Node 1',
       children: [
-        { label: 'Child 1.1' },
+        {
+          label: 'Child 1.1',
+          children: [
+            {
+              label: 'Child 1.1.1',
+              children: [
+                {
+                  label: 'Child 1.1.1.1',
+                  children: [
+                    { label: 'Child 1.1.1.1.1' },
+                    { label: 'Child 1.1.1.1.2' }
+                  ]
+                },
+                { label: 'Child 1.1.1.2' }
+              ]
+            },
+            { label: 'Child 1.1.2' }
+          ]
+        },
         { label: 'Child 1.2' }
       ]
     },
     {
       label: 'Node 2',
       children: [
-        { label: 'Child 2.1' },
+        {
+          label: 'Child 2.1',
+          children: [
+            {
+              label: 'Child 2.1.1',
+              children: [
+                { label: 'Child 2.1.1.1' },
+                { label: 'Child 2.1.1.2' }
+              ]
+            }
+          ]
+        },
         { label: 'Child 2.2' }
       ]
     }
