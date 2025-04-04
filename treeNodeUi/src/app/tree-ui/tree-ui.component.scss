@@ -1,0 +1,50 @@
+.dropdown {
+  width: 250px; // Establece un ancho fijo para el dropdown
+}
+
+.dropdown-menu {
+  max-height: 300px; // Limita la altura del menú
+  overflow-y: auto; // Habilita el scroll si el contenido es demasiado grande
+  border-radius: 8px; // Bordes redondeados
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Sombra para darle profundidad
+  background-color: #f0fff0; // Fondo verde claro
+  border: 1px solid #228B22; // Borde verde bosque
+  padding: 0.5rem; // Espaciado interno
+  opacity: 0;
+  transform: translateY(-15px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+
+  &.show {
+    opacity: 1; // Hace visible el menú
+    transform: translateY(0); // Restablece la posición
+  }
+}
+
+.list-group-item {
+  border: none; // Elimina los bordes entre los elementos
+  padding: 0.5rem 1rem; // Ajusta el espaciado interno
+  transition: background-color 0.2s ease-in-out;
+  font-size: 0.875rem; // Tamaño de fuente más pequeño
+
+  &:hover {
+    background-color: #e6ffe6; // Fondo verde muy claro al pasar el mouse
+  }
+}
+
+button#dropdownMenuButton {
+  width: 100%; // Asegura que el botón ocupe todo el ancho del contenedor
+  text-align: left; // Alinea el texto a la izquierda
+  border-radius: 8px; // Bordes redondeados
+  background-color: #228B22; // Color verde bosque
+  color: #fff; // Texto blanco
+  padding: 0.5rem 1rem; // Espaciado interno
+  font-weight: bold; // Hace el texto más destacado
+}
+
+button#dropdownMenuButton:hover {
+  background-color: #1e7a1e; // Verde más oscuro al pasar el mouse
+}
+
+button#dropdownMenuButton:focus {
+  box-shadow: 0 0 0 0.2rem rgba(34, 139, 34, 0.25); // Sombra verde al enfocar
+}

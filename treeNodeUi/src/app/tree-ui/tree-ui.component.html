@@ -1,8 +1,19 @@
-<div class="container mt-4">
-  <h3 class="mb-3">Tree UI</h3>
-  <ul class="list-group">
-    @for (node of treeData; track $index) {
-      <app-tree-node [node]="node"></app-tree-node>
-    }
-  </ul>
+<div class="dropdown">
+  <button
+    class="btn btn-secondary dropdown-toggle text-truncate"
+    type="button"
+    id="dropdownMenuButton"
+    data-bs-toggle="dropdown"
+    data-bs-auto-close="outside"
+    aria-expanded="false">
+    <i class="bi bi-tree me-2"></i>
+    {{ selectedNodeLabel()}}
+  </button>
+  <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+    <ul class="list-group">
+      @for (node of treeData; track $index) {
+        <app-tree-node [node]="node" (nodeSelected)="onNodeSelected($event)"></app-tree-node>
+      }
+    </ul>
+  </div>
 </div>

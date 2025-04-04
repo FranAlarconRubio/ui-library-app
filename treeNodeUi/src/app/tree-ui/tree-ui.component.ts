@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
 import { CommonModule } from '@angular/common';
+import { Node } from '../interfaces/node.interface';
 
 @Component({
   selector: 'app-tree-ui',
@@ -10,7 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./tree-ui.component.scss']
 })
 export class TreeUiComponent {
-  treeData = [
+  treeData: Node[] = [
     {
       label: 'Node 1',
       children: [
@@ -26,4 +27,10 @@ export class TreeUiComponent {
       ]
     }
   ];
+
+  selectedNodeLabel = signal<string>('Select Node');
+
+  onNodeSelected(node: Node): void {
+    this.selectedNodeLabel.set(node.label);
+  }
 }
