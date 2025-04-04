@@ -18,6 +18,7 @@
   font-size: 0.875rem; // Tamaño de fuente consistente
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  background-color: transparent !important;
 
   &:hover {
     background-color: #e6ffe6; // Fondo verde muy claro al pasar el mouse
@@ -37,6 +38,7 @@ ul {
   margin: 0; // Elimina márgenes acumulativos
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
+  background-color: transparent;;
 
   &.collapsed {
     max-height: 0;
@@ -45,4 +47,17 @@ ul {
   &.expanded {
     max-height: 500px; // Ajusta según el contenido
   }
+}
+
+.folder-icon {
+  color: #FFD700 !important; // Fuerza el color amarillo dorado
+  font-size: 1.2rem; // Ajusta el tamaño del ícono si es necesario
+}
+
+.bi-file-earmark {
+  color: #A0522D; // Color marrón claro para los archivos (opcional)
+}
+
+.bi-file-earmark-fill {
+  color: #FFD700 !important; // Fuerza el color marrón claro para los archivos
 }
