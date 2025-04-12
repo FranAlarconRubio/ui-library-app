@@ -24,6 +24,8 @@ export class PickListDragAndDrop2Component<T extends Displayable> {
 
   @Input() leftItems: T[] = [];
   @Input() rightItems: T[] = [];
+  @Input() originTitle: string = '';
+  @Input() targetTitle: string = '';
 
   // Track selected items in both lists
   selectedLeftItems: T[] = [];
