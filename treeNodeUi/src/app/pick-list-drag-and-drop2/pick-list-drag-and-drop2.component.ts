@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, Input, model, ViewEncapsulation } from '@angular/core';
+import { Component, forwardRef, input, Input, model, signal, ViewEncapsulation } from '@angular/core';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Displayable } from './model/Displayable.model';
 import { Direction } from './model/direction.model';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'pick-list-drag-and-drop2',
@@ -18,16 +19,42 @@ import { Direction } from './model/direction.model';
     MatButtonModule,
     MatIconModule
   ],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PickListDragAndDrop2Component),
+      multi: true
+    }
+  ],
   templateUrl: './pick-list-drag-and-drop2.component.html',
   styleUrl: './pick-list-drag-and-drop2.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class PickListDragAndDrop2Component<T extends Displayable> {
+export class PickListDragAndDrop2Component<T extends Displayable> implements ControlValueAccessor {
+  
+  writeValue(value: T[]): void {
+    if(!value) return;
+
+    this.rightItems.set(value);
+  }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled.set(isDisabled);
+  }
 
   public readonly leftItems = model.required<T[]>();
   public readonly rightItems = model.required<T[]>();
   public readonly originTitle = input<string>('Origin');
   public readonly targetTitle = input<string>('Target');
+  private readonly disabled = signal<boolean>(false);
+
+  private onChange = (value: T[]) => {};
+  private onTouched = () => {};
 
   // Track selected items in both lists
   selectedLeftItems: T[] = [];
