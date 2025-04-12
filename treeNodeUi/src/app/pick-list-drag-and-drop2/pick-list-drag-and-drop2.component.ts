@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, Input, model, ViewEncapsulation } from '@angular/core';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Displayable } from './model/Displayable.model';
+import { Direction } from './model/direction.model';
 
 @Component({
   selector: 'pick-list-drag-and-drop2',
@@ -18,19 +19,21 @@ import { Displayable } from './model/Displayable.model';
     MatIconModule
   ],
   templateUrl: './pick-list-drag-and-drop2.component.html',
-  styleUrl: './pick-list-drag-and-drop2.component.scss'
+  styleUrl: './pick-list-drag-and-drop2.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class PickListDragAndDrop2Component<T extends Displayable> {
 
-  @Input() leftItems: T[] = [];
-  @Input() rightItems: T[] = [];
-  @Input() originTitle: string = '';
-  @Input() targetTitle: string = '';
+  public readonly leftItems = model.required<T[]>();
+  public readonly rightItems = model.required<T[]>();
+  public readonly originTitle = input<string>('Origin');
+  public readonly targetTitle = input<string>('Target');
 
   // Track selected items in both lists
   selectedLeftItems: T[] = [];
   selectedRightItems: T[] = [];
 
+  public readonly direction = Direction;
 
   /**
    * Handles the drop event when an item is dragged between lists
@@ -67,10 +70,10 @@ export class PickListDragAndDrop2Component<T extends Displayable> {
    * Check if a single item is being dragged (not part of a multi-select)
    */
   private isSingleItemDrag(event: CdkDragDrop<T[]>): boolean {
-    const sourceList = event.previousContainer.id === 'cdk-drop-list-0' ? 'left' : 'right';
+    const sourceList = event.previousContainer.id === 'cdk-drop-list-0' ? Direction.LEFT : Direction.RIGHT;
     const draggedItem = event.item.data;
 
-    return sourceList === 'left'
+    return sourceList === Direction.LEFT
       ? !this.selectedLeftItems.includes(draggedItem) || this.selectedLeftItems.length === 0
       : !this.selectedRightItems.includes(draggedItem) || this.selectedRightItems.length === 0;
   }
@@ -79,9 +82,9 @@ export class PickListDragAndDrop2Component<T extends Displayable> {
    * Handle dragging multiple selected items between lists
    */
   private handleMultiItemDrag(event: CdkDragDrop<T[]>) {
-    const sourceList = event.previousContainer.id === 'cdk-drop-list-0' ? 'left' : 'right';
+    const sourceList = event.previousContainer.id === 'cdk-drop-list-0' ? Direction.LEFT : Direction.RIGHT;
     const draggedItem = event.item.data;
-    const selectedItems = sourceList === 'left' ? this.selectedLeftItems : this.selectedRightItems;
+    const selectedItems = sourceList === Direction.LEFT ? this.selectedLeftItems : this.selectedRightItems;
 
     // If dragged item is not in selected items, just move that item
     if (!selectedItems.includes(draggedItem)) {
@@ -117,8 +120,8 @@ export class PickListDragAndDrop2Component<T extends Displayable> {
   /**
    * Toggle item selection
    */
-  toggleSelect(item: T, list: 'left' | 'right'): void {
-    if (list === 'left') {
+  toggleSelect(item: T, list: Direction): void {
+    if (list === Direction.LEFT) {
       const index = this.selectedLeftItems.findIndex(i => i.id === item.id);
       if (index === -1) {
         this.selectedLeftItems.push(item);
@@ -138,19 +141,19 @@ export class PickListDragAndDrop2Component<T extends Displayable> {
   /**
    * Check if an item is selected
    */
-  isSelected(item: T, list: 'left' | 'right'): boolean {
-    if (list === 'left') {
-      return this.selectedLeftItems.some(i => i.id === item.id);
+  isSelected(item: T, list: Direction): boolean {
+    if (list === Direction.LEFT) {
+      return this.selectedLeftItems.some(({ id }) => id === item.id);
     } else {
-      return this.selectedRightItems.some(i => i.id === item.id);
+      return this.selectedRightItems.some(({ id }) => id === item.id);
     }
   }
 
   /**
    * Check if a list has any selected items
    */
-  hasSelectedItems(list: 'left' | 'right'): boolean {
-    return list === 'left'
+  hasSelectedItems(list: Direction): boolean {
+    return list === Direction.LEFT
       ? this.selectedLeftItems.length > 0
       : this.selectedRightItems.length > 0;
   }
@@ -162,12 +165,12 @@ export class PickListDragAndDrop2Component<T extends Displayable> {
     if (this.selectedLeftItems.length === 0) return;
 
     // Add all selected items to right list
-    this.rightItems = [...this.rightItems, ...this.selectedLeftItems];
+    this.rightItems.update(rightItems => [...rightItems, ...this.selectedLeftItems]);
 
     // Remove selected items from left list
-    this.leftItems = this.leftItems.filter(
+    this.leftItems.update(leftItems => leftItems.filter(
       item => !this.selectedLeftItems.some(selected => selected.id === item.id)
-    );
+    ));
 
     // Clear selection
     this.clearSelections();
@@ -180,12 +183,12 @@ export class PickListDragAndDrop2Component<T extends Displayable> {
     if (this.selectedRightItems.length === 0) return;
 
     // Add all selected items to left list
-    this.leftItems = [...this.leftItems, ...this.selectedRightItems];
+    this.leftItems.update(leftItems => [...leftItems, ...this.selectedRightItems]);
 
     // Remove selected items from right list
-    this.rightItems = this.rightItems.filter(
+    this.rightItems.update(rightItems => rightItems.filter(
       item => !this.selectedRightItems.some(selected => selected.id === item.id)
-    );
+    ));
 
     // Clear selection
     this.clearSelections();

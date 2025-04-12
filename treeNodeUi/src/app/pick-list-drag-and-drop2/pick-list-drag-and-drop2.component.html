@@ -2,14 +2,14 @@
     <div class="list-container">
         <mat-card>
             <mat-card-header>
-                <mat-card-title> {{ originTitle }} </mat-card-title>
+                <mat-card-title> {{ originTitle() }} </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div cdkDropList #leftList="cdkDropList" [cdkDropListData]="leftItems"
+                <div cdkDropList #leftList="cdkDropList" [cdkDropListData]="leftItems()"
                     [cdkDropListConnectedTo]="[rightList]" class="item-list" (cdkDropListDropped)="drop($event)">
-                    @for (item of leftItems; track $index) {
+                    @for (item of leftItems(); track $index) {
                         <div class="item-box" cdkDrag [cdkDragData]="item"
-                            [class.selected]="isSelected(item, 'left')" (click)="toggleSelect(item, 'left')">
+                            [class.selected]="isSelected(item, direction.LEFT)" (click)="toggleSelect(item, direction.LEFT)">
                             {{ item.label }}
                         </div>
                     }
@@ -20,10 +20,10 @@
 
     <div class="action-buttons">
         <button mat-raised-button color="primary" (click)="moveSelectedToRight()"
-            [disabled]="!hasSelectedItems('left')">
+            [disabled]="!hasSelectedItems(direction.LEFT)">
             <mat-icon>arrow_forward</mat-icon> Move to Right
         </button>
-        <button mat-raised-button color="accent" (click)="moveSelectedToLeft()" [disabled]="!hasSelectedItems('right')">
+        <button mat-raised-button color="accent" (click)="moveSelectedToLeft()" [disabled]="!hasSelectedItems(direction.RIGHT)">
             <mat-icon>arrow_back</mat-icon> Move to Left
         </button>
     </div>
@@ -31,14 +31,14 @@
     <div class="list-container">
         <mat-card>
             <mat-card-header>
-                <mat-card-title> {{ targetTitle }} </mat-card-title>
+                <mat-card-title> {{ targetTitle() }} </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div cdkDropList #rightList="cdkDropList" [cdkDropListData]="rightItems"
+                <div cdkDropList #rightList="cdkDropList" [cdkDropListData]="rightItems()"
                     [cdkDropListConnectedTo]="[leftList]" class="item-list" (cdkDropListDropped)="drop($event)">
-                    @for (item of rightItems; track $index) {
+                    @for (item of rightItems(); track $index) {
                         <div class="item-box" cdkDrag [cdkDragData]="item"
-                            [class.selected]="isSelected(item, 'right')" (click)="toggleSelect(item, 'right')">
+                            [class.selected]="isSelected(item, direction.RIGHT)" (click)="toggleSelect(item, direction.RIGHT)">
                             {{ item.label }}
                         </div>
                     }
