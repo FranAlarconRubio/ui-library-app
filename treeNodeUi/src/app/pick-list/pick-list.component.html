@@ -1,0 +1,31 @@
+<div style="display: flex; align-items: center; gap: 20px;">
+    <!-- Lista de origen -->
+    <mat-selection-list [multiple]="true" (selectionChange)="onOriginSelectionChanged($event)">
+        @for (item of leftItems(); track $index) {
+            <mat-list-option [value]="item">
+                {{ item }}
+            </mat-list-option>
+        }
+    </mat-selection-list>
+
+    <!-- Botones -->
+     <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button mat-icon-button (click)="moveRight()" [disabled]="!selectedLeft().length">
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button mat-icon-button (click)="moveLeft()" [disabled]="!selectedRight().length">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+     </div>
+
+     <!-- Lista de destino -->
+    <mat-selection-list multiple="true" (selectionChange)="onTargetSelectionChanged($event)">
+        @for (item of rightItems(); track $index) {
+            <mat-list-option [value]="item">
+                {{ item }}
+            </mat-list-option>
+        }
+    </mat-selection-list>
+
+
+</div>

@@ -62,3 +62,35 @@ button#dropdownMenuButton:hover {
 button#dropdownMenuButton:focus {
   box-shadow: 0 0 0 0.2rem rgba(34, 139, 34, 0.25); // Sombra verde al enfocar
 }
+
+input[type="checkbox"] {
+  /* Oculta el checkbox predeterminado */
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid #228B22; // Borde verde bosque
+  border-radius: 4px; // Bordes redondeados
+  outline: none;
+  cursor: pointer;
+  background-color: transparent; // Fondo transparente
+
+  /* Estilo cuando está marcado */
+  &:checked {
+    background-color: #228B22; // Fondo verde bosque
+    border-color: #228B22; // Borde verde bosque
+  }
+
+  /* Agrega un ícono de check personalizado */
+  &:checked::after {
+    content: '✔'; // Símbolo de check
+    color: white; // Color del check
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -2px; // Ajusta la posición vertical del check
+    left: 2px; // Ajusta la posición horizontal del check
+  }
+}

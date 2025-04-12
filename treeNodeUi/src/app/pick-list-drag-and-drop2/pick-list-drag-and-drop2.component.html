@@ -1,0 +1,45 @@
+<div class="drag-drop-container">
+    <div class="list-container">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Source List</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div cdkDropList #leftList="cdkDropList" [cdkDropListData]="leftItems"
+                    [cdkDropListConnectedTo]="[rightList]" class="item-list" (cdkDropListDropped)="drop($event)">
+                    <div *ngFor="let item of leftItems" class="item-box" cdkDrag [cdkDragData]="item"
+                        [class.selected]="isSelected(item, 'left')" (click)="toggleSelect(item, 'left')">
+                        {{ item.name }}
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div class="action-buttons">
+        <button mat-raised-button color="primary" (click)="moveSelectedToRight()"
+            [disabled]="!hasSelectedItems('left')">
+            <mat-icon>arrow_forward</mat-icon> Move to Right
+        </button>
+        <button mat-raised-button color="accent" (click)="moveSelectedToLeft()" [disabled]="!hasSelectedItems('right')">
+            <mat-icon>arrow_back</mat-icon> Move to Left
+        </button>
+    </div>
+
+    <div class="list-container">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Target List</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div cdkDropList #rightList="cdkDropList" [cdkDropListData]="rightItems"
+                    [cdkDropListConnectedTo]="[leftList]" class="item-list" (cdkDropListDropped)="drop($event)">
+                    <div *ngFor="let item of rightItems" class="item-box" cdkDrag [cdkDragData]="item"
+                        [class.selected]="isSelected(item, 'right')" (click)="toggleSelect(item, 'right')">
+                        {{ item.name }}
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

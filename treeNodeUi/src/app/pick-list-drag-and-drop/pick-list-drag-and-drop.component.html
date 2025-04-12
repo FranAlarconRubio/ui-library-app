@@ -1,0 +1,35 @@
+<div cdkDropListGroup>
+
+    <div class="example-container">
+        <h2>Origin</h2>
+        <div cdkDropList [cdkDropListData]="origin" class="example-list" (cdkDropListDropped)="onDrop($event)">
+            @for (item of origin; track $index) {
+                <div class="example-box" cdkDrag>
+                    {{ item }}
+                </div>
+            }
+        </div>
+    </div>
+
+     <!-- Botones -->
+     <div style="display: flex; flex-direction: column; gap: 10px;" class="example-container">
+        <button mat-icon-button>
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+     </div>
+
+    <div class="example-container">
+        <h2>Target</h2>
+        <div cdkDropList [cdkDropListData]="target" class="example-list" (cdkDropListDropped)="onDrop($event)">
+            @for (item of target; track $index) {
+                <div class="example-box" cdkDrag>
+                    {{ item }}
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

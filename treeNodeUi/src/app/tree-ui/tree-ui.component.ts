@@ -14,46 +14,53 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 export class TreeUiComponent {
   treeData: Node[] = [
     {
+      id: '1',
       label: 'Node 1',
       children: [
         {
+          id: '1.1',
           label: 'Child 1.1',
           children: [
             {
+              id: '1.1.1',
               label: 'Child 1.1.1',
               children: [
                 {
+                  id: '1.1.1.1',
                   label: 'Child 1.1.1.1',
                   children: [
-                    { label: 'Child 1.1.1.1.1' },
-                    { label: 'Child 1.1.1.1.2' }
+                    { id:'1.1.1.1.1', label: 'Child 1.1.1.1.1' },
+                    { id: '1.1.1.1.2', label: 'Child 1.1.1.1.2' }
                   ]
                 },
-                { label: 'Child 1.1.1.2' }
+                { id: '1.1.1.2', label: 'Child 1.1.1.2' }
               ]
             },
-            { label: 'Child 1.1.2' }
+            { id: '1.1.2', label: 'Child 1.1.2' }
           ]
         },
-        { label: 'Child 1.2' }
+        { id: '1.2', label: 'Child 1.2' }
       ]
     },
     {
+      id: '2',
       label: 'Node 2',
       children: [
         {
+          id: '2.1',
           label: 'Child 2.1',
           children: [
             {
+              id: '2.1.1',
               label: 'Child 2.1.1',
               children: [
-                { label: 'Child 2.1.1.1' },
-                { label: 'Child 2.1.1.2' }
+                { id: '2.1.1.1', label: 'Child 2.1.1.1' },
+                { id: '2.1.1.2', label: 'Child 2.1.1.2' }
               ]
             }
           ]
         },
-        { label: 'Child 2.2' }
+        { id: '2.2', label: 'Child 2.2' }
       ]
     }
   ];
