@@ -1,14 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
-interface Item {
-  id: number;
-  name: string;
-}
+import { Displayable } from './model/Displayable.model';
 
 @Component({
   selector: 'pick-list-drag-and-drop2',
@@ -24,37 +20,20 @@ interface Item {
   templateUrl: './pick-list-drag-and-drop2.component.html',
   styleUrl: './pick-list-drag-and-drop2.component.scss'
 })
-export class PickListDragAndDrop2Component implements OnInit {
+export class PickListDragAndDrop2Component<T extends Displayable> {
 
-  leftItems: Item[] = [];
-  rightItems: Item[] = [];
+  @Input() leftItems: T[] = [];
+  @Input() rightItems: T[] = [];
 
   // Track selected items in both lists
-  selectedLeftItems: Item[] = [];
-  selectedRightItems: Item[] = [];
+  selectedLeftItems: T[] = [];
+  selectedRightItems: T[] = [];
 
-  ngOnInit(): void {
-    // Initialize with sample data
-    this.leftItems = [
-      { id: 1, name: 'Item 1' },
-      { id: 2, name: 'Item 2' },
-      { id: 3, name: 'Item 3' },
-      { id: 4, name: 'Item 4' },
-      { id: 5, name: 'Item 5' },
-      { id: 6, name: 'Item 6' },
-      { id: 7, name: 'Item 7' },
-      { id: 8, name: 'Item 8' }
-    ];
-    this.rightItems = [
-      { id: 9, name: 'Item 9' },
-      { id: 10, name: 'Item 10' }
-    ];
-  }
 
   /**
    * Handles the drop event when an item is dragged between lists
    */
-  drop(event: CdkDragDrop<Item[]>) {
+  drop(event: CdkDragDrop<T[]>) {
     if (event.previousContainer === event.container) {
       // Item moved within the same list
       moveItemInArray(
@@ -85,7 +64,7 @@ export class PickListDragAndDrop2Component implements OnInit {
   /**
    * Check if a single item is being dragged (not part of a multi-select)
    */
-  private isSingleItemDrag(event: CdkDragDrop<Item[]>): boolean {
+  private isSingleItemDrag(event: CdkDragDrop<T[]>): boolean {
     const sourceList = event.previousContainer.id === 'cdk-drop-list-0' ? 'left' : 'right';
     const draggedItem = event.item.data;
 
@@ -97,7 +76,7 @@ export class PickListDragAndDrop2Component implements OnInit {
   /**
    * Handle dragging multiple selected items between lists
    */
-  private handleMultiItemDrag(event: CdkDragDrop<Item[]>) {
+  private handleMultiItemDrag(event: CdkDragDrop<T[]>) {
     const sourceList = event.previousContainer.id === 'cdk-drop-list-0' ? 'left' : 'right';
     const draggedItem = event.item.data;
     const selectedItems = sourceList === 'left' ? this.selectedLeftItems : this.selectedRightItems;
@@ -136,7 +115,7 @@ export class PickListDragAndDrop2Component implements OnInit {
   /**
    * Toggle item selection
    */
-  toggleSelect(item: Item, list: 'left' | 'right'): void {
+  toggleSelect(item: T, list: 'left' | 'right'): void {
     if (list === 'left') {
       const index = this.selectedLeftItems.findIndex(i => i.id === item.id);
       if (index === -1) {
@@ -157,7 +136,7 @@ export class PickListDragAndDrop2Component implements OnInit {
   /**
    * Check if an item is selected
    */
-  isSelected(item: Item, list: 'left' | 'right'): boolean {
+  isSelected(item: T, list: 'left' | 'right'): boolean {
     if (list === 'left') {
       return this.selectedLeftItems.some(i => i.id === item.id);
     } else {

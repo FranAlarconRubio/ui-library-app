@@ -9,7 +9,7 @@
                     [cdkDropListConnectedTo]="[rightList]" class="item-list" (cdkDropListDropped)="drop($event)">
                     <div *ngFor="let item of leftItems" class="item-box" cdkDrag [cdkDragData]="item"
                         [class.selected]="isSelected(item, 'left')" (click)="toggleSelect(item, 'left')">
-                        {{ item.name }}
+                        {{ item.label }}
                     </div>
                 </div>
             </mat-card-content>
@@ -36,7 +36,7 @@
                     [cdkDropListConnectedTo]="[leftList]" class="item-list" (cdkDropListDropped)="drop($event)">
                     <div *ngFor="let item of rightItems" class="item-box" cdkDrag [cdkDragData]="item"
                         [class.selected]="isSelected(item, 'right')" (click)="toggleSelect(item, 'right')">
-                        {{ item.name }}
+                        {{ item.label }}
                     </div>
                 </div>
             </mat-card-content>
