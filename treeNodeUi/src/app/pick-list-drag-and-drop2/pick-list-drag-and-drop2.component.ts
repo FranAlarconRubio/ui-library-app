@@ -149,7 +149,7 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
   /**
    * Toggle item selection
    */
-  toggleSelect(item: T, list: Direction): void {
+  public toggleSelect(item: T, list: Direction): void {
     if (list === Direction.LEFT) {
       const index = this.selectedLeftItems.findIndex(i => i.id === item.id);
       if (index === -1) {
@@ -170,7 +170,7 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
   /**
    * Check if an item is selected
    */
-  isSelected(item: T, list: Direction): boolean {
+  public isSelected(item: T, list: Direction): boolean {
     if (list === Direction.LEFT) {
       return this.selectedLeftItems.some(({ id }) => id === item.id);
     } else {
@@ -181,7 +181,7 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
   /**
    * Check if a list has any selected items
    */
-  hasSelectedItems(list: Direction): boolean {
+  public hasSelectedItems(list: Direction): boolean {
     return list === Direction.LEFT
       ? this.selectedLeftItems.length > 0
       : this.selectedRightItems.length > 0;
@@ -190,7 +190,7 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
   /**
    * Move selected items from left to right
    */
-  moveSelectedToRight(): void {
+  public moveSelectedToRight(): void {
     if (this.selectedLeftItems.length === 0) return;
 
     // Add all selected items to right list
@@ -211,10 +211,15 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
     this.onTouched();
   }
 
+  public moveAllToRight(): void {
+    this.selectedLeftItems = this.leftItems();
+    this.moveSelectedToRight();
+  }
+
   /**
    * Move selected items from right to left
    */
-  moveSelectedToLeft(): void {
+  public moveSelectedToLeft(): void {
     if (this.selectedRightItems.length === 0) return;
 
     // Add all selected items to left list
@@ -233,10 +238,15 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
     this.onTouched();
   }
 
+  public moveAllToLeft(): void {
+    this.selectedRightItems = this.rightItems();
+    this.moveSelectedToLeft();
+  }
+
   /**
    * Clear all selections
    */
-  clearSelections(): void {
+  public clearSelections(): void {
     this.selectedLeftItems = [];
     this.selectedRightItems = [];
   }

@@ -19,12 +19,17 @@
     </div>
 
     <div class="action-buttons">
-        <button mat-raised-button color="primary" (click)="moveSelectedToRight()"
-            [disabled]="!hasSelectedItems(direction.LEFT)">
+        <button mat-raised-button color="primary" (click)="moveAllToRight()" [disabled]="leftItems().length === 0">
+            <mat-icon>keyboard_double_arrow_right</mat-icon> Move all to Right
+        </button>
+        <button mat-raised-button color="primary" (click)="moveSelectedToRight()" [disabled]="!hasSelectedItems(direction.LEFT)">
             <mat-icon>arrow_forward</mat-icon> Move to Right
         </button>
         <button mat-raised-button color="accent" (click)="moveSelectedToLeft()" [disabled]="!hasSelectedItems(direction.RIGHT)">
             <mat-icon>arrow_back</mat-icon> Move to Left
+        </button>
+        <button mat-raised-button color="accent" (click)="moveAllToLeft()" [disabled]="rightItems().length === 0">
+            <mat-icon>keyboard_double_arrow_left</mat-icon> Move all to Left
         </button>
     </div>
 
