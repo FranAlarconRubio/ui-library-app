@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TreeUiComponent } from "./tree-ui/tree-ui.component";
 import { PickListComponent } from "./pick-list/pick-list.component";
 import { PickListDragAndDropComponent } from './pick-list-drag-and-drop/pick-list-drag-and-drop.component';
 import { PickListDragAndDrop2Component } from './pick-list-drag-and-drop2/pick-list-drag-and-drop2.component';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TreeUiComponent, PickListComponent, PickListDragAndDropComponent, PickListDragAndDrop2Component],
+  imports: [RouterOutlet, CommonModule, ReactiveFormsModule, TreeUiComponent, PickListComponent, PickListDragAndDropComponent, PickListDragAndDrop2Component],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -31,4 +33,10 @@ export class AppComponent {
     { id: 9, name: 'Item 9', label: 'Item9' },
     { id: 10, name: 'Item 10', label: 'Item10' }
   ];
+
+  private fb = inject(FormBuilder);
+
+  myForm = this.fb.group({
+    miLista: this.fb.control(this.rightItems,  [ Validators.required ])
+  })
 }

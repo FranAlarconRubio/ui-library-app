@@ -10,4 +10,11 @@
 
 <hr>
 <br>
-<pick-list-drag-and-drop2 [leftItems]="leftItems" [rightItems]="rightItems" ></pick-list-drag-and-drop2>
+<form [formGroup]="myForm">
+
+    <pick-list-drag-and-drop2 [items]="leftItems" formControlName="miLista"></pick-list-drag-and-drop2>
+
+
+    <br>
+    {{ myForm.controls.miLista.value | json }}
+</form>

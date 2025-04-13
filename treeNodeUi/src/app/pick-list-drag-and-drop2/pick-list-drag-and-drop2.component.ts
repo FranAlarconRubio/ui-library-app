@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, input, Input, model, signal, ViewEncapsulation } from '@angular/core';
+import { Component, forwardRef, input, model, signal, ViewEncapsulation } from '@angular/core';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,23 +32,27 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class PickListDragAndDrop2Component<T extends Displayable> implements ControlValueAccessor {
   
-  writeValue(value: T[]): void {
+  public writeValue(value: T[]): void {
     if(!value) return;
 
     this.rightItems.set(value);
+    this.leftItems.update(items => items.filter(item => !value.includes(item)))
   }
-  registerOnChange(fn: any): void {
+
+  public registerOnChange(fn: any): void {
     this.onChange = fn;
   }
-  registerOnTouched(fn: any): void {
+
+  public registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-  setDisabledState?(isDisabled: boolean): void {
+
+  public setDisabledState?(isDisabled: boolean): void {
     this.disabled.set(isDisabled);
   }
 
-  public readonly leftItems = model.required<T[]>();
-  public readonly rightItems = model.required<T[]>();
+  public readonly leftItems = model.required<T[]>({ alias: 'items' });
+  public readonly rightItems = signal<T[]>([]);
   public readonly originTitle = input<string>('Origin');
   public readonly targetTitle = input<string>('Target');
   private readonly disabled = signal<boolean>(false);
@@ -65,7 +69,7 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
   /**
    * Handles the drop event when an item is dragged between lists
    */
-  drop(event: CdkDragDrop<T[]>) {
+  public drop(event: CdkDragDrop<T[]>) {
     if (event.previousContainer === event.container) {
       // Item moved within the same list
       moveItemInArray(
@@ -73,21 +77,19 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
         event.previousIndex,
         event.currentIndex
       );
+    } else if (this.isSingleItemDrag(event)) { // Item moved between lists
+      // Single item drag - move just the dragged item
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
-      // Item moved between lists
-      if (this.isSingleItemDrag(event)) {
-        // Single item drag - move just the dragged item
-        transferArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex
-        );
-      } else {
-        // Multi-item drag - move all selected items
-        this.handleMultiItemDrag(event);
-      }
+      // Multi-item drag - move all selected items
+      this.handleMultiItemDrag(event);
     }
+    
 
     // Clear selections after drag
     this.clearSelections();
@@ -192,7 +194,12 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
     if (this.selectedLeftItems.length === 0) return;
 
     // Add all selected items to right list
-    this.rightItems.update(rightItems => [...rightItems, ...this.selectedLeftItems]);
+    this.rightItems.update(rightItems => {
+      const updated = [...rightItems, ...this.selectedLeftItems];
+      this.onChange(updated);
+      return updated;
+    });
+
 
     // Remove selected items from left list
     this.leftItems.update(leftItems => leftItems.filter(
@@ -201,6 +208,7 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
 
     // Clear selection
     this.clearSelections();
+    this.onTouched();
   }
 
   /**
@@ -213,12 +221,16 @@ export class PickListDragAndDrop2Component<T extends Displayable> implements Con
     this.leftItems.update(leftItems => [...leftItems, ...this.selectedRightItems]);
 
     // Remove selected items from right list
-    this.rightItems.update(rightItems => rightItems.filter(
-      item => !this.selectedRightItems.some(selected => selected.id === item.id)
-    ));
+    this.rightItems.update(rightItems => {
+      const updated = rightItems.filter(
+      item => !this.selectedRightItems.some(({ id }) => id === item.id));
+      this.onChange(updated);
+      return updated;
+    });
 
     // Clear selection
     this.clearSelections();
+    this.onTouched();
   }
 
   /**
